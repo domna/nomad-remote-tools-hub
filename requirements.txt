@@ -1,0 +1,11 @@
+pyyaml
+fastapi
+requests
+setuptools
+mypy
+pylint
+pycodestyle
+pytest
+pytest-cov
+types-PyYAML
+types-requests
