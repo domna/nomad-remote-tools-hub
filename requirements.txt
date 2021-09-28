@@ -9,3 +9,4 @@ pytest
 pytest-cov
 types-PyYAML
 types-requests
+uvicorn
