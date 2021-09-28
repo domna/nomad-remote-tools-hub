@@ -1,0 +1,18 @@
+image: python:3.7
+
+stages:
+  - test
+
+linting:
+  stage: test
+  script:
+    - pip install -e .
+    - python -m pycodestyle --ignore=E501,E701,E731 north tests
+    - python -m pylint north tests
+    - python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional north tests
+
+tests:
+  stage: test
+  script:
+    - pip install -e .
+    - python -m pytest --cov=north -sv tests
