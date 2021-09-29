@@ -1,0 +1,1 @@
+docker run -p {port}:8888 -v {mountpoint}:/home/jovyan/work --user 1000:1000 --group-add users jupyter/datascience-notebook start-notebook.sh --NotebookApp.base_url='{endpoint}'
