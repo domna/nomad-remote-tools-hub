@@ -21,7 +21,7 @@ This config file is based on pydantic's
 [settings management](https://pydantic-docs.helpmanual.io/usage/settings/).
 '''
 
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from pydantic import Field, BaseSettings
 import yaml
 import os.path
@@ -29,6 +29,19 @@ import os
 
 
 class NorthConfig(BaseSettings):
+    docker_url: Optional[str] = Field(
+        None,
+        description=(
+            'The URL to remotely (or locally) connect to the docker engine API. '
+            'If this is not given, the docker config will be read from the local env.'))
+
+    docker_name_prefix: str = Field(
+        'north',
+        description=(
+            'A prefix used for all container names. This can be used to avoid collisions '
+            'with other services using the same docker environment.')
+    )
+
     secret: str = Field(
         'this is a secret',
         description='The secret for generating JWT tokens and other cryptographic material.')

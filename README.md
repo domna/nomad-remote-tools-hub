@@ -66,3 +66,15 @@ We recomment using vs-code. Here are vs-code settings that match the CI/CD linti
 - `tests` - The [pytest](https://docs.pytest.org/) tests
 - `setup.py` - Install the package with pip
 - `docker` - All the docker files, scripts for creating/managing images, documentation
+
+
+## Architecture
+
+North is supposed to be run stand alone or as part of a NOMAD Oasis. Currently, we are
+only targeting docker as the environment to run tools.
+
+![with NOMAD Oasis on dev cluster](docs/assets/north-oasis-architecture.png)
+
+- all containers that are run need to have an explicit name and this name has to be prefixed
+with `north.config.docker_name_prefix`. This will allow us to target docker environments
+that are used by other services.
