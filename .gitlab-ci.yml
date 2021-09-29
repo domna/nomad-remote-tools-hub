@@ -13,6 +13,9 @@ linting:
 
 tests:
   stage: test
+  variables:
+    NORTH_DOCKER_URL: ${CI_TARGET_DOCKER_ENV_URL}
+    NORTH_DOCKER_NAME_PREFIX: north-${CI_COMMIT_REF_NAME}
   script:
     - pip install -e .
     - python -m pytest --cov=north -sv tests
