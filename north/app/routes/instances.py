@@ -24,8 +24,12 @@ import time
 import docker
 from docker import DockerClient
 
-from north.app.models import InstanceModel, InstanceResponseModel, ChannelUnavailableError
+from fastapi import APIRouter
+from fastapi.params import Depends
+
 from north import config
+from north.app.routes.auth import token
+from north.app.models import InstanceModel, InstanceResponseModel, ChannelUnavailableError
 
 router = APIRouter()
 router_tag = 'instances'
@@ -100,7 +104,7 @@ async def get_instances():
         },
         503: {"model": ChannelUnavailableError, "description": "Raises a 503 HTTP error when channels are unavailable"}
     })
-async def post_instances(request: Request, instance: InstanceModel, current_user: str = Depends(get_current_active_user)):
+async def post_instances(request: Request, instance: InstanceModel, current_user: str = Depends(get_current_active_user), token=Depends(token)):
     ''' Create a new tool instance. '''
     channel = get_available_channel()
     path = f'{request.scope.get("root_path")}/container/{channel}/'

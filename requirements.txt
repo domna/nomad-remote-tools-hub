@@ -13,3 +13,4 @@ types-requests
 uvicorn
 docker
 requests
+PyJWT

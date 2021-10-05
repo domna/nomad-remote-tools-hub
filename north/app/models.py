@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-from typing import List, Dict
+from typing import List, Dict, Optional, Any
 from pydantic import BaseModel, validator, Field
 
 # TODO This exemplifies pydantic models a little bit. But, this is just for demonstration.
@@ -73,3 +73,9 @@ class Error(BaseModel):
 class ChannelUnavailableError(BaseModel):
     ''' An error model for the 503 HTTP error when requesting a container launch '''
     message: str = "There are no available channels to assign at the moment. Please try again."
+
+
+class TokenModel(BaseModel):
+    token: str
+    claims: Optional[Dict[str, Any]]
+    expires: Optional[int]
