@@ -25,6 +25,7 @@ from north import config
 
 from .routes import instances
 from .routes import tools
+from .routes import auth
 
 app = FastAPI(
     title='NOMAD remote tools hub API',
@@ -35,6 +36,7 @@ app = FastAPI(
 
 app.include_router(tools.router, prefix='/tools')
 app.include_router(instances.router, prefix='/instances')
+app.include_router(auth.router, prefix='/auth')
 
 
 # A default 404 response with a link to the API dashboard for convinience
