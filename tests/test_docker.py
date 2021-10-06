@@ -19,6 +19,8 @@
 import pytest
 import docker
 from docker import DockerClient
+import requests
+import time
 
 from north import config
 
@@ -36,7 +38,7 @@ def docker_client() -> DockerClient:
 
     yield docker_client
 
-    # Remove old containrs that might be leftover from failing tests
+    # Remove old containers that might be leftover from failing tests
     docker_name_prefix_filter = dict(filters=dict(name=f'{config.docker_name_prefix}-.*'))
     for container in docker_client.containers.list(**docker_name_prefix_filter):
         container.stop()
@@ -48,6 +50,8 @@ def assert_container(docker_client: DockerClient, name: str, remove: bool = Fals
     container = docker_client.containers.get(name)
     assert container is not None
     if remove:
+        if container.status == 'running':
+            container.stop()
         container.remove()
 
 
@@ -56,4 +60,26 @@ def test_run_hello(docker_client: DockerClient):
     results = docker_client.containers.run('ubuntu:latest', 'echo hello world', name=name)
 
     assert results == b'hello world\n', results
+    assert_container(docker_client, name, remove=True)
+
+
+@pytest.mark.timeout(30)
+def test_run_proxy(docker_client: DockerClient):
+    name = f'{config.docker_name_prefix}-test-proxy'
+
+    docker_client.containers.run(config.proxy_image, ports={'80': 8000}, name=name, detach=True)
+
+    done = False
+    while not done:
+        try:
+            r = requests.get(config.proxy_host)
+            if r.status_code == 200:
+                done = True
+            else:
+                time.sleep(1)
+        except requests.exceptions.ConnectionError:
+            print("Connection Error: Proxy may not be ready yet. Retrying...")
+
+    assert r.text == 'Proxy is up!'
+
     assert_container(docker_client, name, remove=True)

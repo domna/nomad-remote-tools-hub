@@ -33,13 +33,24 @@ class NorthConfig(BaseSettings):
         None,
         description=(
             'The URL to remotely (or locally) connect to the docker engine API. '
-            'If this is not given, the docker config will be read from the local env.'))
+            'If this is not given, the docker config will be read from the local env.')
+    )
 
     docker_name_prefix: str = Field(
         'north',
         description=(
             'A prefix used for all container names. This can be used to avoid collisions '
             'with other services using the same docker environment.')
+    )
+
+    proxy_image: Optional[str] = Field(
+        None,
+        description='The proxy image to run tests on during CI.'
+    )
+
+    proxy_host: str = Field(
+        None,
+        description='The proxy host to test the proxy container during CI.'
     )
 
     secret: str = Field(
