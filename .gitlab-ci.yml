@@ -1,7 +1,18 @@
 image: python:3.7
 
 stages:
+  - build
   - test
+
+build_test_image:
+  image: docker:20.10.8
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker pull $CI_REGISTRY/nomad-lab/nomad-remote-tools-hub/north-proxy:$CI_COMMIT_REF_NAME || true
+    - docker build --cache-from $CI_REGISTRY/nomad-lab/nomad-remote-tools-hub/north-proxy:$CI_COMMIT_REF_NAME --tag $CI_REGISTRY/nomad-lab/nomad-remote-tools-hub/north-proxy:$CI_COMMIT_SHA --tag $CI_REGISTRY/nomad-lab/nomad-remote-tools-hub/north-proxy:$CI_COMMIT_REF_NAME docker/proxy/
+    - docker push $CI_REGISTRY/nomad-lab/nomad-remote-tools-hub/north-proxy:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY/nomad-lab/nomad-remote-tools-hub/north-proxy:$CI_COMMIT_REF_NAME
 
 linting:
   stage: test
@@ -14,6 +25,8 @@ linting:
 tests:
   stage: test
   variables:
+    NORTH_PROXY_IMAGE: ${CI_REGISTRY}/nomad-lab/nomad-remote-tools-hub/north-proxy:${CI_COMMIT_SHA}
+    NORTH_PROXY_HOST: https://nomad-lab.eu/dev/north/
     NORTH_DOCKER_URL: ${CI_TARGET_DOCKER_ENV_URL}
     NORTH_DOCKER_NAME_PREFIX: north-${CI_COMMIT_REF_NAME}
   script:
