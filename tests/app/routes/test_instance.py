@@ -17,6 +17,33 @@
 #
 
 import pytest
+import docker
+from docker import DockerClient
+
+from north import config
+
+
+@pytest.fixture(scope='function')
+def docker_cleanup():
+    '''
+    A function scope fixture for using docker. It will try to remove all left-over containers
+    after the test function.
+    '''
+    # Before the test code
+
+    yield
+
+    # Remove old containers that might be leftover from failing tests
+    if config.docker_url:
+        docker_client = DockerClient(base_url=config.docker_url)
+    else:
+        docker_client = docker.from_env()
+
+    docker_name_prefix_filter = dict(filters=dict(name=f'{config.docker_name_prefix}-test'))
+    for container in docker_client.containers.list(**docker_name_prefix_filter):
+        container.stop()
+    for container in docker_client.containers.list(**docker_name_prefix_filter, all=True):
+        container.remove()
 
 
 def test_get_instances(api):
@@ -26,10 +53,23 @@ def test_get_instances(api):
 
 
 @pytest.mark.parametrize('request_json, status_code', [
-    pytest.param({'name': 'myinstance', 'tool_name': 'jupyter'}, 200, id='ok'),
-    pytest.param({'name': 'myinstance', 'tool_name': 'doesnotexist'}, 422, id='tool-does-not-exist'),
-    pytest.param({'tool_name': 'jupyter'}, 422, id='name-is-missing')
+    pytest.param({'name': 'jupyter'}, 200, id='ok'),
+    pytest.param({'name': 'doesnotexist'}, 422, id='tool-does-not-exist'),
+    pytest.param({}, 422, id='name-is-missing')
 ])
-def test_post_instances(api, request_json, status_code):
+def test_post_instances(api, request_json, status_code, docker_cleanup):
     response = api.post('instances/', json=request_json)
-    assert response.status_code == status_code, response.text
+    assert response.status_code == status_code
+    if status_code == 200:
+        assert response.json() == {"path": "/container/0/"}
+
+
+def test_post_instances_already_running(api, docker_cleanup):
+    response = api.post('instances/', json={'name': 'jupyter'})
+    assert response.status_code == 200
+    first_response = response.json()
+
+    # Now we make another request to test what happens if the user has an instance running
+    response = api.post('instances/', json={'name': 'jupyter'})
+    assert response.status_code == 200
+    assert response.json() == first_response

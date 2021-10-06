@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-from typing import List, Dict, Optional
+from typing import List, Dict
 from pydantic import BaseModel, validator, Field
 
 # TODO This exemplifies pydantic models a little bit. But, this is just for demonstration.
@@ -48,10 +48,28 @@ tools_map: Dict[str, ToolModel] = {tool.name: tool for tool in all_tools}
 
 class InstanceModel(BaseModel):
     name: str
-    docker_id: Optional[str]
-    tool_name: str
 
-    @validator('tool_name')
-    def validate_tool_name(cls, tool_name):  # pylint: disable=no-self-argument
-        assert tool_name in tools_map, 'Tool must exist.'
-        return tool_name
+    @validator('name')
+    def validate_name(cls, name):  # pylint: disable=no-self-argument
+        assert name in tools_map, 'The requested tool does not exist in our list.'
+        return name
+
+
+class InstanceInDBModel(InstanceModel):
+    ''' The Instance Model to use to store data internally '''
+    docker_id: str
+
+
+class InstanceResponseModel(BaseModel):
+    ''' Response model with approprate instance information for the client '''
+    path: str = ''
+
+
+class Error(BaseModel):
+    ''' An error model to represent generic error messages '''
+    message: str
+
+
+class ChannelUnavailableError(BaseModel):
+    ''' An error model for the 503 HTTP error when requesting a container launch '''
+    message: str = "There are no available channels to assign at the moment. Please try again."
