@@ -16,19 +16,33 @@
 # limitations under the License.
 #
 
-from north.app.models import TokenModel
-from typing import Optional
+from typing import Optional, List
 from fastapi import APIRouter, Request
 from fastapi.exceptions import HTTPException
 from fastapi.params import Depends
 
+from north.app.models import TokenModel
 from north.auth import create_token, verify_token, TokenError
 
 router = APIRouter()
 router_tag = 'auth'
 
 
-def token(request: Request) -> Optional[TokenModel]:
+def token_channel(request: Request) -> Optional[TokenModel]:
+    ''' Dependency for all routes that require channel authorization '''
+    authorization = request.headers.get('Authorization')
+    if authorization is None:
+        raise HTTPException(status_code=401, detail='Authorization is required.')
+
+    return _token(request=request, claims=['channel'])
+
+
+def token_launch(request: Request) -> Optional[TokenModel]:
+    ''' Dependency for all routes that require launch authorization '''
+    return _token(request=request, claims=['paths'])
+
+
+def _token(request: Request, claims: List[str]) -> Optional[TokenModel]:
     authorization = request.headers.get('Authorization')
     if authorization is None:
         return None
@@ -38,23 +52,15 @@ def token(request: Request) -> Optional[TokenModel]:
         raise HTTPException(status_code=401, detail='Invalid authentication scheme.')
 
     try:
-        return verify_token(token, claims=['channel'])
+        return verify_token(token, claims=claims)
     except TokenError as e:
         raise HTTPException(status_code=401, detail=e.msg) from e
-
-
-def token_required(request: Request):
-    authorization = request.headers.get('Authorization')
-    if authorization is None:
-        raise HTTPException(status_code=401, detail='Authorization is required.')
-
-    return token(request)
 
 
 @router.get(
     '/channel/{channel}',
     tags=[router_tag])
-async def authorize_channel(channel: int, token=Depends(token_required)):
+async def authorize_channel(channel: int, token=Depends(token_channel)):
     '''
     Verifies channel token in the header and either raises HTTP 200 or 401.
     This is used by a proxy to authorize access to a docker container channel before

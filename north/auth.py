@@ -32,11 +32,11 @@ clients to create containers that access a users files and directories.
 All tokens can exprire. Token can be re-issued by the north auth API.
 '''
 
-from north.app.models import TokenModel
 from typing import List, Dict, Any, Optional
 import jwt
 from datetime import datetime, timedelta
 
+from north.app.models import TokenModel
 from north import config
 
 
@@ -98,7 +98,7 @@ def verify_token(token: str, claims: List[str] = None) -> TokenModel:
         payload.
 
     Raises:
-        TokenError: If the token could not be decoded, is experied, or did not contain
+        TokenError: If the token could not be decoded, is expired, or did not contain
             the necessary claims.
     '''
 

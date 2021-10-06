@@ -28,7 +28,7 @@ from fastapi import APIRouter
 from fastapi.params import Depends
 
 from north import config
-from north.app.routes.auth import token
+from north.app.routes.auth import token_launch
 from north.app.models import InstanceModel, InstanceResponseModel, ChannelUnavailableError
 
 router = APIRouter()
@@ -69,13 +69,6 @@ def get_available_channel() -> str:
         ) from channel_unavailable
 
 
-# temp current_user placeholder. I want to use the user id as
-# a tag to filter out containers. Docker is source of truth.
-# Todo: Implement in the JWT issue and change the return from str to BaseModel
-async def get_current_active_user():
-    return 'test'
-
-
 @router.get(
     '/',
     tags=[router_tag],
@@ -104,11 +97,11 @@ async def get_instances():
         },
         503: {"model": ChannelUnavailableError, "description": "Raises a 503 HTTP error when channels are unavailable"}
     })
-async def post_instances(request: Request, instance: InstanceModel, current_user: str = Depends(get_current_active_user), token=Depends(token)):
+async def post_instances(request: Request, instance: InstanceModel, token=Depends(token_launch)):
     ''' Create a new tool instance. '''
     channel = get_available_channel()
     path = f'{request.scope.get("root_path")}/container/{channel}/'
-    container_name = f'{config.docker_name_prefix}-{current_user}-{instance.name}'
+    container_name = f'{config.docker_name_prefix}-{token.token}-{instance.name}'
 
     docker_client = get_docker_client()
 
