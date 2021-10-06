@@ -21,6 +21,7 @@ import docker
 from docker import DockerClient
 
 from north import config
+from north.auth import create_launch_token
 
 
 @pytest.fixture(scope='function')
@@ -39,7 +40,7 @@ def docker_cleanup():
     else:
         docker_client = docker.from_env()
 
-    docker_name_prefix_filter = dict(filters=dict(name=f'{config.docker_name_prefix}-test'))
+    docker_name_prefix_filter = dict(filters=dict(name=f'{config.docker_name_prefix}'))
     for container in docker_client.containers.list(**docker_name_prefix_filter):
         container.stop()
     for container in docker_client.containers.list(**docker_name_prefix_filter, all=True):
@@ -58,18 +59,20 @@ def test_get_instances(api):
     pytest.param({}, 422, id='name-is-missing')
 ])
 def test_post_instances(api, request_json, status_code, docker_cleanup):
-    response = api.post('instances/', json=request_json)
+    token = create_launch_token(paths=[''])
+    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json=request_json)
     assert response.status_code == status_code
     if status_code == 200:
         assert response.json() == {"path": "/container/0/"}
 
 
 def test_post_instances_already_running(api, docker_cleanup):
-    response = api.post('instances/', json={'name': 'jupyter'})
+    token = create_launch_token(paths=[''])
+    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json={'name': 'jupyter'})
     assert response.status_code == 200
     first_response = response.json()
 
     # Now we make another request to test what happens if the user has an instance running
-    response = api.post('instances/', json={'name': 'jupyter'})
+    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json={'name': 'jupyter'})
     assert response.status_code == 200
     assert response.json() == first_response
