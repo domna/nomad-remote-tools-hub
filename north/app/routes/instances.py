@@ -112,18 +112,23 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
         path = current_containers[0].labels['path']
         return InstanceResponseModel(path=path)
 
-    docker_client.containers.run(
-        image="jupyter/datascience-notebook",
-        command=(
-            f'start-notebook.sh --NotebookApp.base_url={path}'
-            ' --NotebookApp.token="" --NotebookApp.password=""'
-        ),
-        ports={"8888": int(f'1000{channel}')},
-        detach=True,
-        name=container_name,
-        user="1000:1000",
-        group_add=["1000"],
-        labels={"path": path}
-    )
+    # We use an async function to run the container so that the API does not
+    # get blocked even if docker needs to do some heavier container startup
+    # routines (e.g. download the container image).
+    async def run_container():
+        docker_client.containers.run(
+            image="jupyter/datascience-notebook",
+            command=(
+                f'start-notebook.sh --NotebookApp.base_url={path}'
+                ' --NotebookApp.token="" --NotebookApp.password=""'
+            ),
+            ports={"8888": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            user="1000:1000",
+            group_add=["1000"],
+            labels={"path": path}
+        )
+    run_container()
 
     return InstanceResponseModel(path=path)
