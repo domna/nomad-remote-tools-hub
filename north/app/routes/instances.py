@@ -114,7 +114,10 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
 
     docker_client.containers.run(
         image="jupyter/datascience-notebook",
-        command=f'start-notebook.sh --NotebookApp.base_url={path}',
+        command=(
+            f'start-notebook.sh --NotebookApp.base_url={path}'
+            ' --NotebookApp.token="" --NotebookApp.password=""'
+        ),
         ports={"8888": int(f'1000{channel}')},
         detach=True,
         name=container_name,
