@@ -17,6 +17,7 @@
 #
 
 from typing import List
+import asyncio
 from fastapi import APIRouter, HTTPException, Request, Depends
 from collections import deque
 from datetime import datetime, timedelta
@@ -129,6 +130,7 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             group_add=["1000"],
             labels={"path": path}
         )
-    run_container()
+    loop = asyncio.get_event_loop()
+    loop.create_task(run_container())
 
     return InstanceResponseModel(path=path)
