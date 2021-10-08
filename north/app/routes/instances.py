@@ -21,6 +21,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException, Request, Depends
 from collections import deque
 from datetime import datetime, timedelta
+import asyncio
 import time
 import docker
 from docker import DockerClient
@@ -124,19 +125,21 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
         channel_token = current_containers[0].labels['channel_token']
         return InstanceResponseModel(path=path, channel_token=channel_token)
 
-    docker_client.containers.run(
-        image="jupyter/datascience-notebook",
-        command=(
-            f'start-notebook.sh --NotebookApp.base_url={path}'
-            ' --NotebookApp.token="" --NotebookApp.password=""'
-        ),
-        ports={"8888": int(f'1000{channel}')},
-        detach=True,
-        name=container_name,
-        user="1000:1000",
-        group_add=["1000"],
-        labels={"path": path, "channel_token": channel_token},
-        mounts=get_docker_mounts_from_paths(instance.paths)
-    )
+    async def run_container():
+        docker_client.containers.run(
+            image="jupyter/datascience-notebook",
+            command=(
+                f'start-notebook.sh --NotebookApp.base_url={path}'
+                ' --NotebookApp.token="" --NotebookApp.password=""'
+            ),
+            ports={"8888": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            user="1000:1000",
+            group_add=["1000"],
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
+    asyncio.create_task(run_container())
 
     return InstanceResponseModel(path=path, channel_token=channel_token)
