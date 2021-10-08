@@ -125,6 +125,9 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
         channel_token = current_containers[0].labels['channel_token']
         return InstanceResponseModel(path=path, channel_token=channel_token)
 
+    # We use an async function to run the container so that the API does not
+    # get blocked even if docker needs to do some heavier container startup
+    # routines (e.g. download the container image).
     async def run_container():
         docker_client.containers.run(
             image="jupyter/datascience-notebook",
