@@ -18,6 +18,9 @@
 
 from typing import List, Dict, Optional, Any
 from pydantic import BaseModel, validator, Field
+from pathlib import Path
+
+from north import config
 
 # TODO This exemplifies pydantic models a little bit. But, this is just for demonstration.
 # The models completed/rewritten and most descriptions are missing.
@@ -48,6 +51,20 @@ tools_map: Dict[str, ToolModel] = {tool.name: tool for tool in all_tools}
 
 class InstanceModel(BaseModel):
     name: str
+    paths: List[str]
+
+    @validator('paths')
+    def validate_path(cls, paths):  # pylint: disable=no-self-argument
+        for path in paths:
+            assert path[0] == '/', 'All paths should start with a leading /.'
+
+            isAllowed = False
+            for allowed_data_path in config.allowed_data_paths:
+                if Path(allowed_data_path) in Path(path).parents or path == allowed_data_path:
+                    isAllowed = True
+            assert isAllowed, 'You can only request to mount allowed paths.'
+
+        return paths
 
     @validator('name')
     def validate_name(cls, name):  # pylint: disable=no-self-argument
@@ -63,6 +80,7 @@ class InstanceInDBModel(InstanceModel):
 class InstanceResponseModel(BaseModel):
     ''' Response model with approprate instance information for the client '''
     path: str = ''
+    channel_token: str
 
 
 class Error(BaseModel):

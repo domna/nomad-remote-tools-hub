@@ -17,18 +17,21 @@
 #
 
 from typing import List
-import asyncio
+from pathlib import Path
 from fastapi import APIRouter, HTTPException, Request, Depends
 from collections import deque
 from datetime import datetime, timedelta
+import asyncio
 import time
 import docker
 from docker import DockerClient
+from docker.types import Mount
 
 from fastapi import APIRouter
 from fastapi.params import Depends
 
 from north import config
+from north.auth import create_channel_token
 from north.app.routes.auth import token_launch
 from north.app.models import InstanceModel, InstanceResponseModel, ChannelUnavailableError
 
@@ -70,6 +73,13 @@ def get_available_channel() -> str:
         ) from channel_unavailable
 
 
+def get_docker_mounts_from_paths(paths):
+    mounts = []
+    for path in paths:
+        mounts.append(Mount(target='/home/jovyan/work/' + Path(path).name, source=path, type='bind'))
+    return mounts
+
+
 @router.get(
     '/',
     tags=[router_tag],
@@ -101,6 +111,7 @@ async def get_instances():
 async def post_instances(request: Request, instance: InstanceModel, token=Depends(token_launch)):
     ''' Create a new tool instance. '''
     channel = get_available_channel()
+    channel_token = create_channel_token(int(channel)).token
     path = f'{request.scope.get("root_path")}/container/{channel}/'
     container_name = f'{config.docker_name_prefix}-{token.token}-{instance.name}'
 
@@ -111,7 +122,8 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
     current_containers = docker_client.containers.list(**docker_name_prefix_filter)
     if len(current_containers) != 0:
         path = current_containers[0].labels['path']
-        return InstanceResponseModel(path=path)
+        channel_token = current_containers[0].labels['channel_token']
+        return InstanceResponseModel(path=path, channel_token=channel_token)
 
     # We use an async function to run the container so that the API does not
     # get blocked even if docker needs to do some heavier container startup
@@ -128,9 +140,9 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             name=container_name,
             user="1000:1000",
             group_add=["1000"],
-            labels={"path": path}
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
         )
-    loop = asyncio.get_event_loop()
-    loop.create_task(run_container())
+    asyncio.create_task(run_container())
 
-    return InstanceResponseModel(path=path)
+    return InstanceResponseModel(path=path, channel_token=channel_token)

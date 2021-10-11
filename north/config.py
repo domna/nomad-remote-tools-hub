@@ -21,7 +21,7 @@ This config file is based on pydantic's
 [settings management](https://pydantic-docs.helpmanual.io/usage/settings/).
 '''
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from pydantic import Field, BaseSettings
 import yaml
 import os.path
@@ -51,6 +51,11 @@ class NorthConfig(BaseSettings):
     proxy_host: str = Field(
         None,
         description='The proxy host to test the proxy container during CI.'
+    )
+
+    allowed_data_paths: List[str] = Field(
+        ['/'],
+        description='The list of host directory paths that are deemed safe to mount in the launched instances.'
     )
 
     secret: str = Field(

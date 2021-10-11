@@ -54,25 +54,27 @@ def test_get_instances(api):
 
 
 @pytest.mark.parametrize('request_json, status_code', [
-    pytest.param({'name': 'jupyter'}, 200, id='ok'),
-    pytest.param({'name': 'doesnotexist'}, 422, id='tool-does-not-exist'),
-    pytest.param({}, 422, id='name-is-missing')
+    pytest.param({'name': 'jupyter', 'paths': ['/']}, 200, id='ok'),
+    pytest.param({'name': 'doesnotexist', 'paths': ['/']}, 422, id='tool-does-not-exist'),
+    pytest.param({'paths': ['/']}, 422, id='name-is-missing'),
+    pytest.param({'name': 'jupyter'}, 422, id='paths-is-missing')
 ])
 def test_post_instances(api, request_json, status_code, docker_cleanup):
-    token = create_launch_token(paths=[''])
+    token = create_launch_token(paths=['/'])
     response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json=request_json)
     assert response.status_code == status_code
     if status_code == 200:
-        assert response.json() == {"path": "/container/0/"}
+        assert response.json()['path'] == "/container/0/"
 
 
 def test_post_instances_already_running(api, docker_cleanup):
-    token = create_launch_token(paths=[''])
-    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json={'name': 'jupyter'})
+    token = create_launch_token(paths=['/'])
+    request_json = {'name': 'jupyter', 'paths': ['/']}
+    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json=request_json)
     assert response.status_code == 200
     first_response = response.json()
 
     # Now we make another request to test what happens if the user has an instance running
-    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json={'name': 'jupyter'})
+    response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json=request_json)
     assert response.status_code == 200
     assert response.json() == first_response
