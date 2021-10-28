@@ -18,9 +18,9 @@
 
 from typing import List, Dict, Optional, Any
 from pydantic import BaseModel, validator, Field
-from pathlib import Path
+# from pathlib import Path
 
-from north import config
+# from north import config
 
 # TODO This exemplifies pydantic models a little bit. But, this is just for demonstration.
 # The models completed/rewritten and most descriptions are missing.
@@ -43,6 +43,11 @@ all_tools: List[ToolModel] = [
         name='hyperspy',
         description='Run hyperspy on a arbitrary .hdf5 file.',
         docker_image='TODO'
+    ),
+    ToolModel(
+        name='nionswift',
+        description='Run Nion Swift to analyze data',
+        docker_image='TODO'
     )
 ]
 
@@ -53,18 +58,21 @@ class InstanceModel(BaseModel):
     name: str
     paths: List[str]
 
-    @validator('paths')
-    def validate_path(cls, paths):  # pylint: disable=no-self-argument
-        for path in paths:
-            assert path[0] == '/', 'All paths should start with a leading /.'
+    # Uncomment this when we have syntax for paths in kubernetes setup
+    # and add validation for those too. It is commented now to let us
+    # test on kubes without caring for validation.
+    # @validator('paths')
+    # def validate_path(cls, paths):  # pylint: disable=no-self-argument
+    #     for path in paths:
+    #         assert path[0] == '/', 'All paths should start with a leading /.'
 
-            isAllowed = False
-            for allowed_data_path in config.allowed_data_paths:
-                if Path(allowed_data_path) in Path(path).parents or path == allowed_data_path:
-                    isAllowed = True
-            assert isAllowed, 'You can only request to mount allowed paths.'
+    #         isAllowed = False
+    #         for allowed_data_path in config.allowed_data_paths:
+    #             if Path(allowed_data_path) in Path(path).parents or path == allowed_data_path:
+    #                 isAllowed = True
+    #         assert isAllowed, 'You can only request to mount allowed paths.'
 
-        return paths
+    #     return paths
 
     @validator('name')
     def validate_name(cls, name):  # pylint: disable=no-self-argument

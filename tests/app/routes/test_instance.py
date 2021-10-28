@@ -54,7 +54,8 @@ def test_get_instances(api):
 
 
 @pytest.mark.parametrize('request_json, status_code', [
-    pytest.param({'name': 'jupyter', 'paths': ['/']}, 200, id='ok'),
+    pytest.param({'name': 'jupyter', 'paths': ['/']}, 200, id='jupyter'),
+    pytest.param({'name': 'nionswift', 'paths': ['/']}, 200, id='nionswift'),
     pytest.param({'name': 'doesnotexist', 'paths': ['/']}, 422, id='tool-does-not-exist'),
     pytest.param({'paths': ['/']}, 422, id='name-is-missing'),
     pytest.param({'name': 'jupyter'}, 422, id='paths-is-missing')
@@ -64,7 +65,7 @@ def test_post_instances(api, request_json, status_code, docker_cleanup):
     response = api.post('instances/', headers=dict(Authorization=f'Bearer {token.token}'), json=request_json)
     assert response.status_code == status_code
     if status_code == 200:
-        assert response.json()['path'] == "/container/0/"
+        assert "/container/" in response.json()['path']
 
 
 def test_post_instances_already_running(api, docker_cleanup):

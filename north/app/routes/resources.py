@@ -16,26 +16,23 @@
 # limitations under the License.
 #
 
-from setuptools import setup, find_packages
+import os
+from pathlib import Path
+from fastapi import APIRouter, Response
+from fastapi.responses import FileResponse
+
+router = APIRouter()
+router_tag = 'resources'
+
+resources_dir_path = Path(os.path.realpath(__file__)).parents[1] / 'resources'
 
 
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
+@router.get("/sw.js", tags=[router_tag])
+async def sw(response: Response):
+    headers = {"Service-Worker-Allowed": '/'}  # We could limit this to the base url of North
+    return FileResponse(str(resources_dir_path) + '/sw.js', headers=headers)
 
 
-def main():
-    setup(
-        name='nomad-remote-tools-hub',
-        version='0.1.0',
-        description='NOMAD remote tools hub allows to run containarized tools remotely',
-        author='The NOMAD Authors',
-        license='APACHE 2.0',
-        packages=find_packages(exclude=['tests', 'tests.*']),
-        package_data={
-            'north': ['app/resources/sw.js']
-        },
-        install_requires=requirements)
-
-
-if __name__ == '__main__':
-    main()
+@router.get("/sw-test.html", tags=[router_tag])
+async def swtest():
+    return FileResponse(str(resources_dir_path) + '/sw-test.html')
