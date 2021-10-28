@@ -26,6 +26,7 @@ from north import config
 from .routes import instances
 from .routes import tools
 from .routes import auth
+from .routes import resources
 
 app = FastAPI(
     title='NOMAD remote tools hub API',
@@ -37,9 +38,10 @@ app = FastAPI(
 app.include_router(tools.router, prefix='/tools')
 app.include_router(instances.router, prefix='/instances')
 app.include_router(auth.router, prefix='/auth')
+app.include_router(resources.router, prefix='/resources')
 
 
-# A default 404 response with a link to the API dashboard for convinience
+# A default 404 response with a link to the API dashboard for convenience
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
     if exc.status_code != 404:

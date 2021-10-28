@@ -14,3 +14,4 @@ uvicorn
 docker
 requests
 PyJWT
+aiofiles

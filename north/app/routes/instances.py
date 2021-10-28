@@ -99,10 +99,10 @@ async def get_instances():
     response_model_exclude_none=True,
     responses={
         200: {
-            "description": "Returns the path to the launched instance",
+            "description": "Returns the path to the launched instance and the channel token.",
             "content": {
                 "application/json": {
-                    "example": {"path": "/container/0/"}
+                    "example": {"path": "/container/0/", "channel_token": "xoE723reog..."}
                 }
             }
         },
@@ -128,7 +128,7 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
     # We use an async function to run the container so that the API does not
     # get blocked even if docker needs to do some heavier container startup
     # routines (e.g. download the container image).
-    async def run_container():
+    async def run_jupyter():
         docker_client.containers.run(
             image="jupyter/datascience-notebook",
             command=(
@@ -143,6 +143,22 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             labels={"path": path, "channel_token": channel_token},
             mounts=get_docker_mounts_from_paths(instance.paths)
         )
-    asyncio.create_task(run_container())
+
+    async def run_nionswift():
+        docker_client.containers.run(
+            image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nionswift-webtop:latest",
+            ports={"3000": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000},
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
+    # TODO: Create a tools class to get all the info we need to run it right
+
+    if instance.name == 'jupyter':
+        asyncio.create_task(run_jupyter())
+    elif instance.name == 'nionswift':
+        asyncio.create_task(run_nionswift())
 
     return InstanceResponseModel(path=path, channel_token=channel_token)
