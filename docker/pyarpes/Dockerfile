@@ -23,7 +23,8 @@ RUN conda config --append channels conda-forge
 RUN conda install -c arpes arpes
 RUN conda install -c conda-forge jupyterlab
 RUN mkdir -p research
-COPY PyArpesWithQtInNorthUbuntuWebTop.ipynb research
+#COPY PyArpesWithQtInNorthUbuntuWebTop.ipynb research
+#RUN echo "/usr/local/miniconda/bin/jupyter-notebook" > /defaults/autostart
 
 #COPY FireUpPyArpes.bash /config
 #WORKDIR /config
