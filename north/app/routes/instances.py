@@ -58,7 +58,7 @@ def get_docker_client() -> DockerClient:
 
 # Placeholder code for something that retains information of what container channel are available
 # Todo: Add channel number tag to the docker container created and use that as a store
-available_channel = deque(['0', '1', '2', '3'])
+available_channel = deque(['0', '1', '2', '3', '4', '5', '6'])
 
 
 def get_available_channel() -> str:
