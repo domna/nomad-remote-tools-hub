@@ -51,7 +51,7 @@ all_tools: List[ToolModel] = [
     ),
     ToolModel(
         name='pyarpes',
-        description='Run pyArpes',
+        description='Run pyARPES to analyze data',
         docker_image='TODO'
     )
 ]
