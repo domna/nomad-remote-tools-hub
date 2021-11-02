@@ -154,11 +154,24 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             labels={"path": path, "channel_token": channel_token},
             mounts=get_docker_mounts_from_paths(instance.paths)
         )
+
+    async def run_nexus_tools():
+        docker_client.containers.run(
+            image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
+            ports={"3000": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000},
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
     # TODO: Create a tools class to get all the info we need to run it right
 
     if instance.name == 'jupyter':
         asyncio.create_task(run_jupyter())
     elif instance.name == 'nionswift':
         asyncio.create_task(run_nionswift())
+    elif instance.name == 'nexus-tools':
+        asyncio.create_task(run_nexus_tools())
 
     return InstanceResponseModel(path=path, channel_token=channel_token)
