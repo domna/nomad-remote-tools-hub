@@ -12,10 +12,12 @@ RUN bash ./miniconda.sh -b -p /pyarpes/v3/thirdparty/miniconda
 ENV PATH=/pyarpes/v3/thirdparty/miniconda/bin:${PATH}
 
 WORKDIR /pyarpes/v3
-RUN git clone https://github.com/chstan/arpes.git
+#RUN git clone https://github.com/chstan/arpes.git
+RUN git clone https://github.com/Tommaso-Pincelli/arpes
 RUN mv arpes python-arpes
 WORKDIR python-arpes
-RUN git checkout d982e4e6ce738fe757ee269af5e07925bbb237b3
+#RUN git checkout d982e4e6ce738fe757ee269af5e07925bbb237b3
+RUN git checkout 792a26dc0f335e2e310968d59750311b91209218
 
 RUN conda init bash
 RUN conda env list && conda env create -f environment.yml && conda env list
