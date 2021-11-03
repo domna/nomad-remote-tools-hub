@@ -155,6 +155,17 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             mounts=get_docker_mounts_from_paths(instance.paths)
         )
 
+    async def run_pyarpes():
+        docker_client.containers.run(
+            image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/pyarpes-webtop:latest",
+            ports={"3000": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000},
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
+
     async def run_paraprobe():
         docker_client.containers.run(
             image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/paraprobe-jupyter",
@@ -187,6 +198,8 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
         asyncio.create_task(run_jupyter())
     elif instance.name == 'nionswift':
         asyncio.create_task(run_nionswift())
+    elif instance.name == 'pyarpes':
+        asyncio.create_task(run_pyarpes())
     elif instance.name == 'paraprobe':
         asyncio.create_task(run_paraprobe())
     elif instance.name == 'nexus-tools':
