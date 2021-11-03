@@ -53,6 +53,11 @@ all_tools: List[ToolModel] = [
         name='nexus-tools',
         description='Includes multiple Nexus tools for visualization and analysis.',
         docker_image='TODO'
+    ),
+    ToolModel(
+        name='paraprobe',
+        description='Run paraprobe on atom probe data',
+        docker_image='TODO'
     )
 ]
 
