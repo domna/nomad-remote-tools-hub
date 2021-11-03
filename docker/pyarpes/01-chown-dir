@@ -1,0 +1,3 @@
+#!/usr/bin/with-contentenv bash
+
+chown -R abc:abc /pyarpes
