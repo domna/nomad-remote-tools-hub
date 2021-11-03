@@ -155,6 +155,22 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             mounts=get_docker_mounts_from_paths(instance.paths)
         )
 
+    async def run_paraprobe():
+        docker_client.containers.run(
+            image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/paraprobe-jupyter",
+            command=(
+                f'start-notebook.sh --NotebookApp.base_url={path}'
+                ' --NotebookApp.token="" --NotebookApp.password=""'
+            ),
+            ports={"8888": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            user="1000:1000",
+            group_add=["1000"],
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
+
     async def run_nexus_tools():
         docker_client.containers.run(
             image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
@@ -171,6 +187,8 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
         asyncio.create_task(run_jupyter())
     elif instance.name == 'nionswift':
         asyncio.create_task(run_nionswift())
+    elif instance.name == 'paraprobe':
+        asyncio.create_task(run_paraprobe())
     elif instance.name == 'nexus-tools':
         asyncio.create_task(run_nexus_tools())
 
