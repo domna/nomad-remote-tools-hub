@@ -58,6 +58,11 @@ all_tools: List[ToolModel] = [
         name='paraprobe',
         description='Run paraprobe on atom probe data',
         docker_image='TODO'
+    ),
+    ToolModel(
+        name='pyarpes',
+        description='Run pyARPES to analyze data',
+        docker_image='TODO'
     )
 ]
 
