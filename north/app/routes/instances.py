@@ -161,7 +161,7 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             ports={"3000": int(f'1000{channel}')},
             detach=True,
             name=container_name,
-            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000},
+            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000, "RUNDIR": "/home/jovyan/work/raw"},
             labels={"path": path, "channel_token": channel_token},
             mounts=get_docker_mounts_from_paths(instance.paths)
         )

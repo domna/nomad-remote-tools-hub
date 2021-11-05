@@ -18,5 +18,3 @@ RUN apt update \
 
 ENV PUID=1000 PGID=1000
 COPY 02-exec-cmd /config/custom-cont-init.d/02-exec-cmd
-COPY --chown=1000:1000 pyARPES_download_and_visualize.ipynb /pyarpes/example/pyARPES_download_and_visualize.ipynb
-WORKDIR /pyarpes/example
