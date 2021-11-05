@@ -58,7 +58,7 @@ def get_docker_client() -> DockerClient:
 
 # Placeholder code for something that retains information of what container channel are available
 # Todo: Add channel number tag to the docker container created and use that as a store
-available_channel = deque(['0', '1', '2', '3', '4', '5', '6'])
+available_channel = deque(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 
 
 def get_available_channel() -> str:
@@ -165,6 +165,33 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             labels={"path": path, "channel_token": channel_token},
             mounts=get_docker_mounts_from_paths(instance.paths)
         )
+
+    async def run_paraprobe():
+        docker_client.containers.run(
+            image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/paraprobe-jupyter",
+            command=(
+                f'start-notebook.sh --NotebookApp.base_url={path}'
+                ' --NotebookApp.token="" --NotebookApp.password=""'
+            ),
+            ports={"8888": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            user="1000:1000",
+            group_add=["1000"],
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
+
+    async def run_nexus_tools():
+        docker_client.containers.run(
+            image="gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
+            ports={"3000": int(f'1000{channel}')},
+            detach=True,
+            name=container_name,
+            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000},
+            labels={"path": path, "channel_token": channel_token},
+            mounts=get_docker_mounts_from_paths(instance.paths)
+        )
     # TODO: Create a tools class to get all the info we need to run it right
 
     if instance.name == 'jupyter':
@@ -173,5 +200,9 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
         asyncio.create_task(run_nionswift())
     elif instance.name == 'pyarpes':
         asyncio.create_task(run_pyarpes())
+    elif instance.name == 'paraprobe':
+        asyncio.create_task(run_paraprobe())
+    elif instance.name == 'nexus-tools':
+        asyncio.create_task(run_nexus_tools())
 
     return InstanceResponseModel(path=path, channel_token=channel_token)

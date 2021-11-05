@@ -57,6 +57,8 @@ def test_get_instances(api):
     pytest.param({'name': 'jupyter', 'paths': ['/']}, 200, id='jupyter'),
     pytest.param({'name': 'nionswift', 'paths': ['/']}, 200, id='nionswift'),
     pytest.param({'name': 'nionswift', 'paths': ['/']}, 200, id='pyarpes'),
+    pytest.param({'name': 'paraprobe', 'paths': ['/']}, 200, id='paraprobe'),
+    pytest.param({'name': 'nexus-tools', 'paths': ['/']}, 200, id='nexus-tools'),
     pytest.param({'name': 'doesnotexist', 'paths': ['/']}, 422, id='tool-does-not-exist'),
     pytest.param({'paths': ['/']}, 422, id='name-is-missing'),
     pytest.param({'name': 'jupyter'}, 422, id='paths-is-missing')

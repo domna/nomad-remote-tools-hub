@@ -46,7 +46,22 @@ all_tools: List[ToolModel] = [
     ),
     ToolModel(
         name='nionswift',
-        description='Run Nion Swift to analyze data',
+        description='Run Nion Swift to analyze data.',
+        docker_image='TODO'
+    ),
+    ToolModel(
+        name='nexus-tools',
+        description='Includes multiple Nexus tools for visualization and analysis.',
+        docker_image='TODO'
+    ),
+    ToolModel(
+        name='paraprobe',
+        description='Run paraprobe on atom probe data',
+        docker_image='TODO'
+    ),
+    ToolModel(
+        name='pyarpes',
+        description='Run pyARPES to analyze data',
         docker_image='TODO'
     ),
     ToolModel(
