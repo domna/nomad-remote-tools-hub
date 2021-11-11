@@ -1,9 +1,14 @@
-[![pipeline status](https://gitlab.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/badges/main/pipeline.svg)](https://gitlab.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/commits/main)
-[![coverage report](https://gitlab.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/badges/main/coverage.svg)](https://gitlab.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/commits/main)
-
 # NOMAD remote tools hub (north)
 
 Lets you run containarized tools remotly.
+
+North is based on Jupyterhub and NOMAD. NOMAD runs Jupyterhub as a separate service,
+provides GUI elements that connect to Jupyterhub to launch and control North tools.
+This project contains all necessary docker images with all the supported tools inside.
+
+## Project structure
+
+- `docker` - All the docker files, scripts for creating/managing images, documentation
 
 ## Getting started
 
@@ -14,67 +19,16 @@ git clone git@gitlab.mpcdf.mpg.de:nomad-lab/nomad-remote-tools-hub.git
 cd nomad-remote-tools-hub
 ```
 
-Optionaly, checkout the desired branch (e.g. develop) and create a feature branch
-```
-git checkout develop
-git checkout -b my-feature
-```
+Get all sub-modules
 
-Create a virtual environment based on Python 3 (>3.7).
 ```sh
-pip install virtualenv
-virtualenv -p `which python3` .pyenv
-source .pyenv/bin/activate
+git submodule update --init
 ```
 
-Install the nomad-remote-tools-hub package.
+Build an image
 ```sh
-pip install -e .
+cd docker/webtop
+docker build -t gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/webtop .
 ```
 
-Run the app with uvivcorn:
-```sh
-uvicorn north.app.main:app
-```
-
-Run the tests with pytest:
-```sh
-pytest -svx test
-```
-
-We recomment using vs-code. Here are vs-code settings that match the CI/CD linting:
-```json
-{
-    "python.pythonPath": ".pyenv/bin/python",
-    "editor.rulers": [90],
-    "editor.renderWhitespace": "all",
-    "editor.tabSize": 4,
-    "files.trimTrailingWhitespace": true,
-    "python.linting.pycodestylePath": "pycodestyle",
-    "python.linting.pycodestyleEnabled": true,
-    "python.linting.pycodestyleArgs": ["--ignore=E501,E701,E731"],
-    "python.linting.mypyEnabled": true,
-    "python.linting.pylintEnabled": true,
-}
-```
-
-## Project structure
-
-- `north` - The Python code
-- `north/app` - The [FastAPI](https://fastapi.tiangolo.com/) application that runs the north app
-- `north/config` - All applications settings
-- `tests` - The [pytest](https://docs.pytest.org/) tests
-- `setup.py` - Install the package with pip
-- `docker` - All the docker files, scripts for creating/managing images, documentation
-
-
-## Architecture
-
-North is supposed to be run stand alone or as part of a NOMAD Oasis. Currently, we are
-only targeting docker as the environment to run tools.
-
-![with NOMAD Oasis on dev cluster](docs/assets/north-oasis-architecture.png)
-
-- all containers that are run need to have an explicit name and this name has to be prefixed
-with `north.config.docker_name_prefix`. This will allow us to target docker environments
-that are used by other services.
+See the respective `README.md` of `docker/*` subdirectories.

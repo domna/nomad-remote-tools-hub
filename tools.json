@@ -1,0 +1,32 @@
+{
+    "jupyter": {
+        "description": "Basic jupyter run with an empty notebook or on given notebook file.",
+        "image": "jupyter/datascience-notebook",
+        "_command": "start-notebook.sh",
+        "_port": 8888
+    },
+    "hyperspy": {
+        "description": "Run hyperspy on a arbitrary .hdf5 file."
+    },
+    "nionswift": {
+        "description": "Run Nion Swift to analyze data.",
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nionswift-webtop:latest",
+        "_port": 3000
+    },
+    "nexus-tools": {
+        "description": "Includes multiple Nexus tools for visualization and analysis.",
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
+        "_port": 3000
+    },
+    "paraprobe": {
+        "description": "Run paraprobe on atom probe data",
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/paraprobe-jupyter",
+        "_command": "start-notebook.sh",
+        "_port": 8888
+    },
+    "pyarpes": {
+        "description": "Run pyARPES to analyze data",
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/pyarpes-webtop:latest",
+        "_port": 3000
+    }
+}

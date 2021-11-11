@@ -1,0 +1,3 @@
+[submodule "docker/webtop/north-guacamole-client"]
+	path = docker/webtop/north-guacamole-client
+	url = https://github.com/nomad-coe/north-guacamole-client.git
