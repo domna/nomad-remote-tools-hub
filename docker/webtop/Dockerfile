@@ -33,3 +33,8 @@ COPY --from=nodebuilder /gclient /gclient
 # ports and volumes
 EXPOSE 8888
 VOLUME /config
+
+# This script loads the env vars set from "Docker" available in the userspace we get in the browser - webtop/s6
+# It helps with setting SUBFOLDER and CUSTOM_PORT externally during runtime
+COPY 01-set-docker-env /config/custom-cont-init.d/01-set-docker-env
+CMD tail -f /dev/null
