@@ -35,6 +35,6 @@ EXPOSE 8888
 VOLUME /config
 
 # This script loads the env vars set from "Docker" available in the userspace we get in the browser - webtop/s6
-# It helps with setting SUBFOLDER and CUSTOM_PORT externally during runtime
+# It helps with tools that require using Docker env vars during runtime from within webtop.
 COPY 01-set-docker-env /config/custom-cont-init.d/01-set-docker-env
 CMD tail -f /dev/null
