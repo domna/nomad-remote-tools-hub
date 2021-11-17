@@ -58,7 +58,7 @@ def get_docker_client() -> DockerClient:
 
 # Placeholder code for something that retains information of what container channel are available
 # Todo: Add channel number tag to the docker container created and use that as a store
-available_channel = deque(['0', '1', '2', '3', '4', '5', '6'])
+available_channel = deque(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 
 
 def get_available_channel() -> str:
@@ -161,7 +161,7 @@ async def post_instances(request: Request, instance: InstanceModel, token=Depend
             ports={"3000": int(f'1000{channel}')},
             detach=True,
             name=container_name,
-            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000},
+            environment={"SUBFOLDER": str(path), "PUID": 1000, "PGID": 1000, "RUNDIR": "/home/jovyan/work/raw"},
             labels={"path": path, "channel_token": channel_token},
             mounts=get_docker_mounts_from_paths(instance.paths)
         )
