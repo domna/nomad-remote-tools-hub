@@ -30,11 +30,12 @@ FROM ghcr.io/linuxserver/webtop:ubuntu-openbox
 RUN rm -rf /gclient
 COPY --from=nodebuilder /gclient /gclient
 
+ENV CUSTOM_PORT=8888
+ENV PUID=1000
+ENV PGID=1000
+
 # ports and volumes
 EXPOSE 8888
 VOLUME /config
 
-# This script loads the env vars set from "Docker" available in the userspace we get in the browser - webtop/s6
-# It helps with tools that require using Docker env vars during runtime from within webtop.
-COPY 01-set-docker-env /config/custom-cont-init.d/01-set-docker-env
-CMD tail -f /dev/null
+CMD sleep infinity

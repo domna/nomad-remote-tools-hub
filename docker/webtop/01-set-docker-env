@@ -1,7 +1,0 @@
-#!/usr/bin/with-contentenv bash
-
-for name in $(printenv); do
-        IFS='='
-        read -a arr <<< "$name"
-        printf ${arr[1]} > /var/run/s6/container_environment/${arr[0]}
-done
