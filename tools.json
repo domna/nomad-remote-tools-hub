@@ -3,31 +3,38 @@
         "description": "Basic jupyter run with an empty notebook or on given notebook file.",
         "image": "jupyter/datascience-notebook",
         "path_prefix": "tree",
+        "mount_path": "/home/jovyan",
         "icon": "jupyter_logo.svg"
     },
     "hyperspy": {
-        "description": "Run hyperspy on a arbitrary .hdf5 file."
+        "description": "Run hyperspy on a arbitrary .hdf5 file.",
+        "mount_path": "/home/jovyan"
     },
     "nionswift": {
         "description": "Run Nion Swift to analyze data.",
-        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nionswift-webtop:latest"
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nionswift-webtop:latest",
+        "mount_path": "/config"
     },
     "nexus-tools": {
         "description": "Includes multiple Nexus tools for visualization and analysis.",
-        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest"
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
+        "mount_path": "/config"
     },
     "paraprobe": {
         "description": "Run paraprobe on atom probe data",
         "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/paraprobe-jupyter",
         "path_prefix": "tree",
-        "icon": "jupyter_logo.svg"
+        "icon": "jupyter_logo.svg",
+        "mount_path": "/home/jovyan"
     },
     "pyarpes": {
         "description": "Run pyARPES to analyze data",
-        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/pyarpes-webtop"
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/pyarpes-webtop",
+        "mount_path": "/config"
     },
     "webtop": {
         "description": "Baseline webtop image for test",
-        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/webtop"
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/webtop",
+        "mount_path": "/config"
     }
 }
