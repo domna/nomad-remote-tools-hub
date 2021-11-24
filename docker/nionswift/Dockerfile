@@ -1,4 +1,4 @@
-FROM linuxserver/webtop:amd64-ubuntu-openbox-version-e1079163
+FROM gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/webtop
 
 # Install Miniconda
 RUN curl https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-Linux-x86_64.sh --output miniconda-install.sh \

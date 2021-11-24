@@ -15,7 +15,7 @@
         "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nionswift-webtop:latest",
         "mount_path": "/config"
     },
-    "nexus-tools": {
+    "nexustools": {
         "description": "Includes multiple Nexus tools for visualization and analysis.",
         "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
         "mount_path": "/config"

@@ -25,7 +25,7 @@ RUN \
     npm install
 
 # runtime stage
-FROM ghcr.io/linuxserver/webtop:ubuntu-openbox
+FROM ghcr.io/linuxserver/webtop:amd64-ubuntu-openbox-version-e1079163
 
 RUN rm -rf /gclient
 COPY --from=nodebuilder /gclient /gclient
