@@ -36,5 +36,11 @@
         "description": "Baseline webtop image for test",
         "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/webtop",
         "mount_path": "/config"
+    },
+    "atomprobetools": {
+        "description": "Miscellaneous tools from the atom probe community",
+        "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/apmtools-webtop",
+        "icon": "jupyter_logo.svg",
+        "mount_path": "/config"
     }
 }
