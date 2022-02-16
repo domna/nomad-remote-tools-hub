@@ -16,11 +16,13 @@ WORKDIR /config
 RUN apt-get install unzip:amd64=6.0-25ubuntu1 -y \
   && curl --output APM.LEAP.Datasets.4.zip https://zenodo.org/record/6104015/files/APM.LEAP.Datasets.4.zip \
   && unzip APM.LEAP.Datasets.4.zip \
+  && mkdir /config/atom_probe_tools \
+  && mkdir /config/atom_probe_tools/leoben_apt_analyzer \
   && rm APM.LEAP.Datasets.4.zip \
-  && mv 70_50_50.POS /config/atom_probe_tools/leoben_apt_analyzer \
-  && mv AB.RRNG /config/atom_probe_tools/leoben_apt_analyzer
+  && mv 70_50_50.POS /config/atom_probe_tools/leoben_apt_analyzer/ \
+  && mv AB.RRNG /config/atom_probe_tools/leoben_apt_analyzer/
 
-COPY ["*.ipynb", "*.py", "*.pdf", "/config/atom_probe_tools/leoben_apt_analyzer"]
+COPY ["*.ipynb", "*.py", "*.pdf", "/config/atom_probe_tools/leoben_apt_analyzer/"]
 
 RUN chown -R ${PUID}:${PGID} /config/atom_probe_tools && chown -R ${PUID}:${PGID} /usr/local/miniconda3
 

@@ -24,12 +24,12 @@ RUN apt-get update && lsb_release -a && \
     apt-get install pip -y && \
     pip install h5py==3.5.0 \
         h5glance==0.7 \
-        h5grove==0.0.8 \
-        jupyterlab[full]==2.3.0 \
-        jupyterlab_h5web[full]==0.0.11 \
+        h5grove==0.0.14 \
+        jupyterlab[full]==3.2.9 \
+        jupyterlab_h5web[full]==1.3.0 \
         punx==0.2.5 \
         nexpy==0.14.1 \
-        silx[full] && \
+        silx[full]==1.0.0 && \
     jupyter lab build
 
 #nexus definitions
@@ -62,6 +62,11 @@ RUN pip install Flask==1.1.2
 #WORKDIR /
 
 #nexus-parser
-RUN git clone https://github.com/nomad-coe/nomad-parser-nexus.git
+RUN pip install --upgrade pip && pip install nomad-lab==1.0.0 \
+        --extra-index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple && \
+    git clone https://github.com/nomad-coe/nomad-parser-nexus.git --recursive
+WORKDIR nomad-parser-nexus
+RUN pip install -r requirements.txt && \
+    pip install -e .[all]
 #export NEXUS_DEF_PATH=/definitions/
 #launch checker: python3 /nomad-parser-nexus/nexusparser/tools/read_nexus.py <nexusfile>
