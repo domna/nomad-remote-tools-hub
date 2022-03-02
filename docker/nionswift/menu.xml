@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 <menu id="root-menu" label="DISABLED">
-<item label="Nion Swift"><action name="Execute"><command>/usr/local/miniconda/bin/nionswift</command></action></item>
+<item label="Nion Swift"><action name="Execute"><command>/opt/conda/bin/nionswift</command></action></item>
 <item label="Nomad North"></item>
 </menu>
 </openbox_menu>
