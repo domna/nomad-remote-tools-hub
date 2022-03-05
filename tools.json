@@ -4,11 +4,13 @@
         "image": "jupyter/datascience-notebook",
         "path_prefix": "tree",
         "mount_path": "/home/jovyan",
-        "icon": "jupyter_logo.svg"
+        "icon": "jupyter_logo.svg",
+        "file_extensions": ["ipynb"]
     },
     "hyperspy": {
         "description": "Run hyperspy on a arbitrary .hdf5 file.",
-        "mount_path": "/home/jovyan"
+        "mount_path": "/home/jovyan",
+        "file_extensions": ["hdf5", "hd5"]
     },
     "nionswift": {
         "description": "Run Nion Swift to analyze data.",
@@ -18,7 +20,8 @@
     "nexustools": {
         "description": "Includes multiple Nexus tools for visualization and analysis.",
         "image": "gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/nexus-webtop:latest",
-        "mount_path": "/config"
+        "mount_path": "/config",
+        "file_extensions": ["nxs"]
     },
     "paraprobe": {
         "description": "Run paraprobe on atom probe data",
