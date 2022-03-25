@@ -1,11 +1,22 @@
 {
     "jupyter": {
-        "description": "Basic jupyter run with an empty notebook or on given notebook file.",
+        "short_description": "Basic jupyter run with an empty notebook or on given notebook file.",
+        "description": "### **Jupyter Notebook**: The Classic Notebook Interface\n\nThe Jupyter Notebook is the original web application for creating and sharing computational documents. It offers a simple, streamlined, document-centric experience.",
         "image": "jupyter/datascience-notebook",
         "path_prefix": "tree",
         "mount_path": "/home/jovyan",
         "icon": "jupyter_logo.svg",
-        "file_extensions": ["ipynb"]
+        "file_extensions": ["ipynb"],
+        "maintainer": [
+            {
+                "name": "Markus Scheidgen",
+                "email": "markus.scheidgen@physik.hu-berlin.de"
+            },
+            {
+                "name": "Some-one Else",
+                "email": "markus.scheidgen@physik.hu-berlin.de"
+            }
+        ]
     },
     "hyperspy": {
         "description": "Run hyperspy on a arbitrary .hdf5 file.",
