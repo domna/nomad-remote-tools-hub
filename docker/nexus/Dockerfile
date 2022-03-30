@@ -26,7 +26,7 @@ RUN apt-get update && lsb_release -a && \
         h5glance==0.7 \
         h5grove==0.0.14 \
         jupyterlab[full]==3.2.9 \
-        jupyterlab_h5web[full]==1.3.0 \
+        jupyterlab_h5web[full]==3.0.0 \
         punx==0.2.5 \
         nexpy==0.14.1 \
         silx[full]==1.0.0 && \
