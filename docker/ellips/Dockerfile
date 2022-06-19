@@ -11,3 +11,5 @@ RUN pip install .
 
 WORKDIR $HOME
 RUN rm -rf pyElli
+
+COPY --chown=${NB_UID}:${NB_GID} . $HOME
