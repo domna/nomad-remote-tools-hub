@@ -1,0 +1,5 @@
+services:
+  mpes:
+    image: .
+    ports:
+      - 8888:8888
