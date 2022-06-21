@@ -5,19 +5,16 @@ WORKDIR $HOME
 
 # Setup jupyterlab and NeXus tools
 RUN pip install --upgrade nodejs
-RUN pip install ipywidgets 
-RUN pip install h5glance==0.7 
-RUN pip install h5grove==0.0.14 
-RUN pip install jupyterlab[full]==3.2.9 
-RUN pip install jupyterlab_h5web[full]==1.3.0 
-RUN pip install punx==0.2.5 
+RUN pip install ipywidgets h5glance==0.7 h5grove==0.0.14 \
+    jupyterlab[full]==3.2.9 jupyterlab_h5web[full]==1.3.0 punx==0.2.5 
 RUN jupyter lab build
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter serverextension enable jupyterlab_h5web
 
-# Install nexus parser
-RUN git clone https://github.com/nomad-coe/nomad-parser-nexus.git --recurse-submodules
+# Install nexus parser (w/o submodules, definitions are cloned seperately)
+RUN git clone https://github.com/nomad-coe/nomad-parser-nexus.git 
 WORKDIR $HOME/nomad-parser-nexus
+RUN git checkout issue-18-fix
 RUN pip install -e . 
 
 # Check out nexus definitions
