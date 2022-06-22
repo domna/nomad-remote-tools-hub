@@ -11,7 +11,15 @@ RUN jupyter lab build
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter serverextension enable jupyterlab_h5web
 
+# Install mpes
+RUN git clone https://github.com/rettigl/mpes.git
+WORKDIR $HOME/mpes
+RUN git checkout metadata
+RUN pip install -r requirements.txt
+RUN pip install -e .
+
 # Install nexus parser (w/o submodules, definitions are cloned seperately)
+WORKDIR $HOME
 RUN git clone https://github.com/nomad-coe/nomad-parser-nexus.git
 WORKDIR $HOME/nomad-parser-nexus
 RUN git checkout mpes-latest
