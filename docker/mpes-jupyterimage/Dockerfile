@@ -24,14 +24,10 @@ RUN git clone https://github.com/nomad-coe/nomad-parser-nexus.git
 WORKDIR $HOME/nomad-parser-nexus
 RUN git checkout mpes-latest
 RUN pip install -e . 
-
-# Check out nexus definitions
 WORKDIR $HOME
-RUN git clone https://github.com/FAIRmat-Experimental/nexus_definitions
-WORKDIR $HOME/nexus_definitions
-RUN git checkout fairmat
 
-# Set the nexus definitions for the nexus parser
+# Check out nexus definitions and set path
+RUN git clone --branch fairmat https://github.com/FAIRmat-Experimental/nexus_definitions
 ENV NEXUS_DEF_PATH $HOME/nexus_definitions
 
 # Copy files into homedir

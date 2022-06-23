@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  mpes-webtop:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - KEYBOARD=de-de-qwertz
+    ports:
+      - 3000:3000
