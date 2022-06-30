@@ -3,11 +3,21 @@ definitions:
   sections:
     MPES:
       base_sections:
-        - "nomad.datamodel.data.EntryData"
+        - 'nomad.datamodel.metainfo.eln.NexusParser'
+        - 'nomad.datamodel.data.EntryData'
       m_annotations:
-        eln: dict()
+        # Here you can set your default values for the reader and nxdl.
+        template: 
+          reader: mpes
+          nxdl: NXmpes.nxdl
+        # Listing quantities in the hide component will not show them in the ELM.
+        # This would be useful to make the default values set in `template` fixed.
+        # Leave the hide key even if you want to pass an emty list like in this example.
+        eln: 
+          # hide: ['nxdl', 'reader']
+          hide: []
       sub_sections:
-        User:
+        user:
           section:
             m_annotations:
               eln:
@@ -133,16 +143,19 @@ definitions:
                                 defaultDisplayUnit: "THz"
                           incident_polarization:
                             type: np.float64
-                            shape: ["*"]
+                            shape: ["4"]
+                            description: Incident Stokes Vector
                             m_annotations:
-                              tabular:
-                              name: Polarization
+                              eln:
+                                component: NumberEditQuantity
                           extent:
                             type: np.float64
-                            shape: ["*"]
+                            shape: ["2"]
+                            unit: meter
                             m_annotations:
-                              tabular:
-                              name: Extent
+                              eln:
+                                component: NumberEditQuantity
+                                defaultDisplayUnit: "micrometer"
                     Pump:
                       section:
                         quantities:
@@ -179,16 +192,18 @@ definitions:
                                 defaultDisplayUnit: "THz"
                           incident_polarization:
                             type: np.float64
-                            shape: ["*"]
+                            shape: ["4"]
                             m_annotations:
-                              tabular:
-                              name: Polarization
+                              eln:
+                                component: NumberEditQuantity
                           extent:
                             type: np.float64
-                            shape: ["*"]
+                            shape: ["2"]
+                            unit: meter
                             m_annotations:
-                              tabular:
-                              name: Extent
+                              eln:
+                                component: NumberEditQuantity
+                                defaultDisplayUnit: "micrometer"
         Sample:
           section:
             m_annotations:
@@ -222,12 +237,15 @@ definitions:
                     component: StringEditQuantity
               temperature:
                 type: np.float64
+                unit: celsius
                 m_annotations:
                   eln:
                     component: NumberEditQuantity
+                    defaultDisplayUnit: "kelvin"
               pressure:
                 type: np.float64
                 unit: bar
                 m_annotations:
                   eln:
                     component: NumberEditQuantity
+                    defaultDisplayUnit: "mbar"
