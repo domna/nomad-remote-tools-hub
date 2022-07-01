@@ -7,3 +7,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8888:8888
+    volumes:
+      - ./example:/home/jovyan/work
+    working_dir: /home/jovyan/work
