@@ -1,4 +1,4 @@
 #!/usr/bin/with-contentenv bash
 
 # Add the command to run an app on startup
-echo "/pyarpes/miniconda3/bin/conda run -n arpes jupyter lab $CWD" > /config/.config/openbox/autostart
+echo "jupyter lab $CWD" > /config/.config/openbox/autostart

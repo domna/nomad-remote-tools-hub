@@ -1,4 +1,4 @@
-FROM gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/webtop
+FROM linuxserver/webtop:ubuntu-xfce
 
 RUN apt update
 RUN apt install git pip qt5-default python3-pyqt5 pyqt5-dev-tools cargo -y
@@ -11,8 +11,5 @@ RUN jupyter lab build
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter serverextension enable jupyterlab_h5web
 
-RUN pip install git+https://github.com/nomad-coe/nomad-parser-nexus.git
+RUN pip install git+https://github.com/nomad-coe/nomad-parser-nexus.git@mpes-latest
 RUN pip install git+https://github.com/FAIRmat-Experimental/arpes.git
-
-COPY 02-exec-cmd /config/custom-cont-init.d/02-exec-cmd
-WORKDIR /config
