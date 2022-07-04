@@ -4,7 +4,7 @@ services:
   mpes-webtop:
     build: 
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
     environment:
       - PUID=1000
       - PGID=1000
@@ -12,3 +12,5 @@ services:
       - KEYBOARD=de-de-qwertz
     ports:
       - 3000:3000
+    volumes:
+      - ./example:/config
