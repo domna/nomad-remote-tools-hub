@@ -8,7 +8,7 @@ This example presents the capabilities of the NOMAD platform to store and standa
 
 # Viewing uploaded data
 
-Here you find an overview of your uploaded data.
+Here, you find an overview of your uploaded data.
 Click on the `> /` button to get a list of your data or select **FILES** from the top menu of this upload.
 You may add your own files to the upload or experiment with the pre-existing electronic lab book example.
 The ELN follows the general structure of NOMAD ELN templates and you may refer to the [official documentation](link me)
@@ -19,16 +19,20 @@ To do so open the **FILES** tab and just select a `.nxs` file.
 
 # Analysing the data
 
-This example works through the use of the NOMAD remote tools hub (NORTH) containers, i.e. besides using and dealing with the uploaded MPES data a container can be started to analyise the data. If you want to execute the examples locally, please refer to the `INSTALL.md` file in this directory.
-In the container you're presented three example notebooks containing the aformentioned examples.
+The examples work through the use of NOMAD remote tools hub (NORTH) containers, i.e. besides using and dealing with the uploaded MPES data, an analysis container can be started. If you want to execute the examples locally, please refer to the `INSTALL.md` file in this directory.
+Please note that the binning from raw files is rather memory intense and you should have at least 20 GB of available
+memory to be able to execute this particular example.
+If your local container suddenly stops and shows an error 137 it is due to memory limitations.
+
+In the container you'll find three example notebooks containing examples mentioned above.
 
 To start an analysis, note your upload id (which you find on top of this explanation) and select **ANALYZE** from the top menu, then **NOMAD Remote Tools Hub**.
 In the appearing list you'll find the ARPES Example, click on it and click **LAUNCH**.
 After a few moments a new tab will open which displays a jupyter environment providing the required analysis tools.
 To find the examples navigate to uploads inside the jupyter hub browser and select the folder with your noted upload id.
 There you'll find the example `ipynb` notebooks.
-Double-clicking each of the notebooks will open the examples in the jupyter main window.
-From here you find detailed instructions inside the notebooks.
+Double-clicking one of the notebooks will open the example in the jupyter main window.
+From here you find detailed instructions inside each of the notebooks.
 
 # Where to go from here?
 
