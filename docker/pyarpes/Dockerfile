@@ -11,7 +11,18 @@ RUN jupyter lab build
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter serverextension enable jupyterlab_h5web
 
-RUN pip install git+https://github.com/nomad-coe/nomad-parser-nexus.git
+WORKDIR /
+# Install nexus parser (w/o submodules, definitions are cloned seperately)
+RUN git clone --recurse-submodules https://github.com/nomad-coe/nomad-parser-nexus.git 
+WORKDIR /nomad-parser-nexus
+RUN pip install -e . 
+
+WORKDIR /
+# Check out nexus definitions and set path
+RUN git clone https://github.com/FAIRmat-Experimental/nexus_definitions
+ENV NEXUS_DEF_PATH /nexus_definitions
+
+RUN pip install git+https://github.com/rettigl/mpes@metadata
 RUN pip install git+https://github.com/FAIRmat-Experimental/arpes.git
 
 COPY 02-exec-cmd /config/custom-cont-init.d/02-exec-cmd
