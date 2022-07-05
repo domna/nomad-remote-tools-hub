@@ -6,15 +6,10 @@ definitions:
         - "nomad.datamodel.metainfo.eln.NexusParser"
         - "nomad.datamodel.data.EntryData"
       m_annotations:
-        # Here you can set your default values for the reader and nxdl.
         template:
           reader: mpes
           nxdl: NXmpes.nxdl
-        # Listing quantities in the hide component will not show them in the ELM.
-        # This would be useful to make the default values set in `template` fixed.
-        # Leave the hide key even if you want to pass an emty list like in this example.
         eln:
-          # hide: ['nxdl', 'reader']
           hide: []
       sub_sections:
         User:
