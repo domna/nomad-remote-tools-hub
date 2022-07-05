@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  mpes:
+    build: 
+      context: ./
+      dockerfile: Dockerfile.jupyter
+    ports:
+      - 8888:8888
+    volumes:
+      - ./example:/home/jovyan/work
+    working_dir: /home/jovyan/work

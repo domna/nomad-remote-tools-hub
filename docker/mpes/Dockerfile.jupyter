@@ -29,7 +29,3 @@ WORKDIR $HOME
 # Check out nexus definitions and set path
 RUN git clone --branch fairmat https://github.com/FAIRmat-Experimental/nexus_definitions
 ENV NEXUS_DEF_PATH $HOME/nexus_definitions
-
-# Copy files into homedir
-WORKDIR $HOME/work
-ADD --chown=${NB_UID}:${NB_GID} example $HOME/work
