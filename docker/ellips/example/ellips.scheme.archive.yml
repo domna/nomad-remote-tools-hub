@@ -1,0 +1,279 @@
+definitions:
+  name: "Ellips ELN Example"
+  sections:
+    Ellips:
+      base_sections:
+        - "nomad.datamodel.metainfo.eln.NexusParser"
+        - "nomad.datamodel.data.EntryData"
+      m_annotations:
+        template:
+          reader: mpes
+          nxdl: NXmpes.nxdl
+        eln:
+          hide: []
+      quantities:
+        filename:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        skip:
+          type: int
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        sep:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        blocks:
+          type: str
+          shape: ["*"]
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        colnames:
+          type: str
+          shape: ["*"]
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        x-var:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        y-var:
+          type: str
+          shape: ["*"]
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        err-var:
+          type: str
+          shape: ["*"]
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        parameters:
+          type: str
+          shape: ["*"]
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        definition:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        # ToDo: Remove @notation which does not work
+        definition/\@version:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        definition/\@url:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        # End of subgroup
+        experiment_identifier:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        experiment_description:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        start_time:
+          type: Datetime
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        # This / notation does not work
+        # ToDo: Create subgroups
+        acquisition_program/program:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        acquisition_program/version:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        acquisition_program/\@url:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        # End of subgroup
+        name:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        affiliation:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        address:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        email:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        model:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        model/\@version:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        company:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        firmware:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        # ToDo: Create subgroup
+        firmware/\@version:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        firmware/\@url:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        # End of subgroup
+        light_source:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        focussing_probes:
+          type: bool 
+          m_annotations:
+            eln:
+              component: BoolEditQuantity
+        angular_spread:
+          type: np.float64 
+          # NOMAD complains when steradian is used
+          # ToDo: Figure out what solid angle unit is used
+          # inside NOMAD
+          #unit: steradian
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        ellipsometry_type:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        calibration_status:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        stage_type:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        detector_type:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        count_time:
+          type: np.float64 
+          unit: second
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        integration_time:
+          type: np.float64
+          unit: second
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        rotating_element:
+          type: str 
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        atom_types:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        sample_name:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        sample_history:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        layer_structure:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        data_identifier:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        data_type:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        medium:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        column_names:
+          type: str
+          shape: ["*"]
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        # ToDo: For angle of incidence and wavelength there should only be a unit select
+        # since the actual value is read from the file.
+        angle_of_incidence:
+          type: np.float64
+          unit: celsius
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        wavelength:
+          type: np.float64
+          unit: angstrom
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+    
+     
