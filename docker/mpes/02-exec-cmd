@@ -1,4 +1,0 @@
-#!/usr/bin/with-contentenv bash
-
-# Add the command to run an app on startup
-echo "jupyter lab $CWD" > /config/.config/openbox/autostart

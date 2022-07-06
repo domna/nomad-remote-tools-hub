@@ -1,3 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-echo "/usr/local/miniconda3/bin/conda run -n base jupyter-lab $CWD" > /config/.config/openbox/autostart
