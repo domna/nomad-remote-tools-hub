@@ -7,8 +7,8 @@ definitions:
         - "nomad.datamodel.data.EntryData"
       m_annotations:
         template:
-          reader: mpes
-          nxdl: NXmpes.nxdl
+          reader: ellips
+          nxdl: NXellipsometry.nxdl
         eln:
           hide: []
       quantities:
@@ -21,6 +21,7 @@ definitions:
           type: int
           m_annotations:
             eln:
+              minValue: 0
               component: NumberEditQuantity
         sep:
           type: str
@@ -179,7 +180,7 @@ definitions:
           # NOMAD complains when steradian is used
           # ToDo: Figure out what solid angle unit is used
           # inside NOMAD
-          #unit: steradian
+          unit: radian**2
           m_annotations:
             eln:
               component: NumberEditQuantity
@@ -209,12 +210,16 @@ definitions:
           m_annotations:
             eln:
               component: NumberEditQuantity
+              minValue: 0
+              defaultDisplayUnit: "s"
         integration_time:
           type: np.float64
           unit: second
           m_annotations:
             eln:
               component: NumberEditQuantity
+              minValue: 0
+              defaultDisplayUnit: "s"
         rotating_element:
           type: str 
           m_annotations:
@@ -263,17 +268,15 @@ definitions:
               component: StringEditQuantity
         # ToDo: For angle of incidence and wavelength there should only be a unit select
         # since the actual value is read from the file.
-        angle_of_incidence:
-          type: np.float64
-          unit: celsius
+        angle_of_incidence_unit:
+          type: str
           m_annotations:
             eln:
-              component: NumberEditQuantity
-        wavelength:
-          type: np.float64
-          unit: angstrom
+              component: StringEditQuantity
+        wavelength_unit:
+          type: str
           m_annotations:
             eln:
-              component: NumberEditQuantity
+              component: StringEditQuantity
     
      

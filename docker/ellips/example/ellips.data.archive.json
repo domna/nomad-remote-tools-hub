@@ -1,0 +1,84 @@
+{
+    "data": {
+        "m_def": "../upload/raw/ellips.scheme.archive.yml#/definitions/section_definitions/0",
+        "reader": "ellips",
+        "nxdl": "NXellipsometry.nxdl",
+        "angle_of_incidence_unit": "degrees",
+        "wavelength_unit": "angstrom",
+        "focussing_probes": false,
+        "input_files": [
+            "test-data.dat",
+            "eln_data.yaml"
+        ],
+        "output": "ellips.test.nxs",
+        "filename": "test-data.dat",
+        "skip": 3,
+        "sep": "\\t",
+        "blocks": [
+            "type",
+            "angle_of_incidence"
+        ],
+        "colnames": [
+            "type",
+            "wavelength",
+            "angle_of_incidence",
+            "psi",
+            "delta",
+            "err.psi",
+            "err.delta"
+        ],
+        "x-var": "wavelength",
+        "y-var": [
+            "psi",
+            "delta"
+        ],
+        "err-var": [
+            "err.psi",
+            "err.delta"
+        ],
+        "parameters": [
+            "type",
+            "angle"
+        ],
+        "definition": "NXellipsometry",
+        "definition/\\@version": "0.0.2",
+        "definition/\\@url": "https://github.com/FAIRmat-Experimental/nexus_definitions/tree/fairmat-ellips/contributed_definitions",
+        "experiment_identifier": "exp-ID",
+        "experiment_description": "RC2 scan on 2nm SiO2 on Si in air",
+        "start_time": "2022-01-27T04:35:00.000Z",
+        "acquisition_program/program": "CompleteEASE",
+        "acquisition_program/version": "6.37",
+        "acquisition_program/\\@url": "https://www.jawoollam.com/ellipsometry-software/completeease",
+        "name": "Name Surname",
+        "affiliation": "HU Berlin",
+        "address": "Unter den Linden 6",
+        "email": "nama@hu-berlin.de",
+        "model": "RC2",
+        "model/\\@version": "0.0.1",
+        "company": "J. A. Woollam Co.",
+        "firmware": "WVASE",
+        "firmware/\\@version": "3.882",
+        "firmware/\\@url": "https://www.jawoollam.com/ellipsometry-software/wvase",
+        "light_source": "arc lamp",
+        "angular_spread": 0.2,
+        "ellipsometry_type": "dual compensator",
+        "calibration_status": "no calibration",
+        "stage_type": "manual stage",
+        "detector_type": "CCD spectrometer",
+        "count_time": 1,
+        "integration_time": 0,
+        "rotating_element": "compensator (source side)",
+        "atom_types": "Si, O",
+        "sample_name": "2nm SiO2 on Si",
+        "sample_history": "Comercially purchased sample",
+        "layer_structure": "2nm SiO2 on Si",
+        "data_identifier": "1",
+        "data_type": "psi/delta",
+        "medium": "air",
+        "column_names": [
+            "psi",
+            "delta"
+        ]
+    },
+    "m_ref_archives": {}
+}
